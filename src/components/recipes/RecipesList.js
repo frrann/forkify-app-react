@@ -7,7 +7,7 @@ const RecipesList = ({ recipes }) => {
     <div className={classes["search-results"]}>
       <ul className={classes.results}>
         {recipes.map((recipe) => (
-          <RecipeItem recipe={recipe} />
+          <RecipeItem key={recipe.id} recipe={recipe} />
         ))}
       </ul>
     </div>

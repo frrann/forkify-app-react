@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom";
 import Icons from "../../assets/images/icons.svg";
 
 import classes from "./RecipeItem.module.scss";
 
 const RecipeItem = ({ recipe }) => {
   return (
-    <li key={recipe.id} className="preview">
-      <a href={recipe.id} className={classes["preview__link"]}>
+    <li className="preview">
+      <Link to={recipe.id} className={classes["preview__link"]}>
         <figure className={classes.preview__fig}>
           <img src={recipe.image_url} alt={recipe.title} />
         </figure>
@@ -18,7 +19,7 @@ const RecipeItem = ({ recipe }) => {
             <use href={`${Icons}#icon-user`}></use>
           </svg>
         </div>
-      </a>
+      </Link>
     </li>
   );
 };
