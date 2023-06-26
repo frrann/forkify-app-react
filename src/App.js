@@ -1,20 +1,27 @@
-import Header from "./components/layout/Header";
-import classes from "./App.module.scss";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+import RootLayout from "./pages/RootLayout";
+import ErrorPage from "./pages/Error";
+import RecipesPage from "./pages/Recipes";
+import RecipeDetailsPage from "./pages/RecipeDetails";
 
 const App = () => {
-  return (
-    <div className={classes.container}>
-      <Header />
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <RootLayout />,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "",
+          element: <RecipesPage />,
+          children: [{ path: ":id", element: <RecipeDetailsPage /> }],
+        },
+      ],
+    },
+  ]);
 
-      {/* <ul>
-        {recipes.map((recipe) => (
-          <li key={recipe.id} className={classes.recipe__title}>
-            {recipe.title}
-          </li>
-        ))}
-      </ul> */}
-    </div>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
