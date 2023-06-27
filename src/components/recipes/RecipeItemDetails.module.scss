@@ -79,6 +79,12 @@
     display: flex;
     align-items: center;
 
+    &-text {
+      font-size: 1.7rem;
+      text-align: center;
+      color: $color-grey-dark-2;
+    }
+
     &:not(:last-child) {
       margin-right: 4.5rem;
     }
@@ -178,5 +184,6 @@
 
   &__publisher {
     font-weight: 700;
+    margin-left: 0.5rem;
   }
 }

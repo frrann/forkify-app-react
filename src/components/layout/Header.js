@@ -1,7 +1,9 @@
-import classes from "./Header.module.scss";
+import { Link } from "react-router-dom";
 
 import Logo from "../../assets/images/logo.png";
 import Icons from "../../assets/images/icons.svg";
+
+import classes from "./Header.module.scss";
 
 const Header = () => {
   const searchBar = <p>Search recipe!</p>;
@@ -45,7 +47,9 @@ const Header = () => {
 
   return (
     <header className={classes.header}>
-      <img src={Logo} alt="Logo" className={classes.header__logo} />
+      <Link to="/">
+        <img src={Logo} alt="Logo" className={classes.header__logo} />
+      </Link>
       {searchBar}
       {navContent}
     </header>
