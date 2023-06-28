@@ -8,7 +8,9 @@ const RecipesPage = () => {
   return (
     <>
       <RecipesList recipes={recipes} />
-      <Outlet />
+      <div style={{ gridArea: "recipe", backgroundColor: "#f9f5f3" }}>
+        <Outlet />
+      </div>
     </>
   );
 };

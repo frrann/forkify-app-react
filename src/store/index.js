@@ -3,7 +3,10 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 const initialState = {
   recipe: {},
   bookmarks: [],
-  search: {},
+  search: {
+    query: "",
+    results: [],
+  },
 };
 
 const slice = createSlice({
@@ -11,8 +14,7 @@ const slice = createSlice({
   initialState,
   reducers: {
     setRecipe(state, action) {
-      const crtRecipe = action.payload;
-      state.recipe = crtRecipe;
+      state.recipe = action.payload;
     },
     updateServings(state, action) {
       const serv = action.payload;
@@ -28,11 +30,40 @@ const slice = createSlice({
         ingr.quantity = (ingr.quantity * newServings) / crtServings;
       });
     },
+    searchResults(state, action) {
+      state.search.query = action.payload.query;
+    },
+    replaceResults(state, action) {
+      state.search.results = action.payload.recipes;
+      console.log(state.search.results);
+    },
   },
 });
 
 const store = configureStore({ reducer: slice.reducer });
 
 export const actions = slice.actions;
+
+export const fetchResults = (query) => {
+  return async (dispatch) => {
+    try {
+      const response = await fetch(
+        `https://forkify-api.herokuapp.com/api/v2/recipes?search=${query}&key=2d03b995-6524-4b23-9d21-fab32287b765`
+      );
+
+      if (!response.ok) {
+        throw new Error("Could not fetch recipes list!");
+      }
+
+      const responseData = await response.json();
+      const { recipes } = responseData.data;
+      console.log(recipes);
+
+      dispatch(actions.replaceResults({ recipes: recipes }));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
 
 export default store;
