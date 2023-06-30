@@ -1,11 +1,12 @@
-import classes from "./Header.module.scss";
+import { Link } from "react-router-dom";
 
+import SearchBar from "./SearchBar";
 import Logo from "../../assets/images/logo.png";
 import Icons from "../../assets/images/icons.svg";
 
-const Header = () => {
-  const searchBar = <p>Search recipe!</p>;
+import classes from "./Header.module.scss";
 
+const Header = () => {
   const navContent = (
     <nav className={classes.nav}>
       <ul className={classes.nav__list}>
@@ -31,11 +32,13 @@ const Header = () => {
           <div className={classes.bookmarks}>
             <ul className={classes.bookmarks__list}>
               <div className={classes.message}>
-                <svg>
-                  <use href={`${Icons}#icon-smile`}></use>
-                </svg>
+                <div>
+                  <svg>
+                    <use href={`${Icons}#icon-alert-triangle`}></use>
+                  </svg>
+                </div>
+                <p>No bookmarks yet. Find a nice recipe and bookmark it :)</p>
               </div>
-              <p>No bookmarks yet. Find a nice recipe and bookmark it :)</p>
             </ul>
           </div>
         </li>
@@ -45,8 +48,10 @@ const Header = () => {
 
   return (
     <header className={classes.header}>
-      <img src={Logo} alt="Logo" className={classes.header__logo} />
-      {searchBar}
+      <Link to="/">
+        <img src={Logo} alt="Logo" className={classes.header__logo} />
+      </Link>
+      <SearchBar />
       {navContent}
     </header>
   );
