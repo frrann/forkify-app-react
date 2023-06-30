@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouteLoaderData } from "react-router-dom";
 
-import { actions } from "../store";
+import { recipeActions } from "../store/recipe-slice";
 
 import RecipeDetails from "../components/recipes/RecipeItemDetails";
 
@@ -14,7 +14,7 @@ const RecipeDetailsPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(actions.setRecipe(fetchedRecipe));
+    dispatch(recipeActions.setRecipe(fetchedRecipe));
   }, [dispatch, fetchedRecipe]);
 
   return <RecipeDetails />;

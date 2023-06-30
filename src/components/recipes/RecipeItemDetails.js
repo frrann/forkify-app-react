@@ -1,39 +1,30 @@
 import { useDispatch, useSelector } from "react-redux";
-import { actions } from "../../store";
+import { useNavigation } from "react-router-dom";
+import { recipeActions } from "../../store/recipe-slice";
 
+import LoadingSpinner from "../UI/LoadingSpinner";
 import Icons from "../../assets/images/icons.svg";
 import classes from "./RecipeItemDetails.module.scss";
 
 const RecipeDetails = () => {
   const dispatch = useDispatch();
 
-  const recipe = useSelector((state) => state.recipe);
+  const recipe = useSelector((state) => state.recipe.recipe);
+
+  const navigation = useNavigation();
 
   const decreaseServingsHandler = (event) => {
-    dispatch(actions.updateServings(-1));
+    dispatch(recipeActions.updateServings(-1));
   };
 
   const increaseServingsHandler = (event) => {
-    dispatch(actions.updateServings(1));
+    dispatch(recipeActions.updateServings(1));
   };
 
   return (
     <>
-      {Object.keys(recipe).length === 0 && (
-        <div className={classes.recipe}>
-          <div className={classes.message}>
-            <div>
-              <svg>
-                <use href={`${Icons}#icon-smile`}></use>
-              </svg>
-            </div>
-            <p>
-              Start by searching for a recipe or an ingredient. Have fun!!!!
-            </p>
-          </div>
-        </div>
-      )}
-      {Object.keys(recipe).length !== 0 && (
+      {navigation.state === "loading" && <LoadingSpinner />}
+      {Object.keys(recipe).length !== 0 && navigation.state === "idle" && (
         <div className={classes.recipe}>
           <figure className={classes.recipe__fig}>
             <img
