@@ -1,22 +1,8 @@
 import { json } from "react-router-dom";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useRouteLoaderData } from "react-router-dom";
-
-import { recipeActions } from "../store/recipe-slice";
 
 import RecipeDetails from "../components/recipes/RecipeItemDetails";
 
 const RecipeDetailsPage = () => {
-  const { data } = useRouteLoaderData("recipe-details");
-  const fetchedRecipe = data.recipe;
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(recipeActions.setRecipe(fetchedRecipe));
-  }, [dispatch, fetchedRecipe]);
-
   return <RecipeDetails />;
 };
 
