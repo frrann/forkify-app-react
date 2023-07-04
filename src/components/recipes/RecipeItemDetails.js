@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigation } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigation, useLoaderData } from "react-router-dom";
 import { recipeActions } from "../../store/recipe-slice";
 
 import LoadingSpinner from "../UI/LoadingSpinner";
@@ -8,10 +9,25 @@ import classes from "./RecipeItemDetails.module.scss";
 
 const RecipeDetails = () => {
   const dispatch = useDispatch();
+  const { data } = useLoaderData();
+  const crtRecipe = data.recipe;
 
-  const recipe = useSelector((state) => state.recipe.recipe);
+  useEffect(() => {
+    dispatch(recipeActions.loadRecipe(crtRecipe));
+  }, [crtRecipe, dispatch]);
 
+  const bookmarks = useSelector((state) => state.recipe.bookmarks);
   const navigation = useNavigation();
+
+  const recipe = { ...crtRecipe };
+  if (
+    bookmarks.length !== 0 &&
+    bookmarks.some((bookmark) => bookmark.id === recipe.id)
+  ) {
+    recipe.bookmarked = true;
+  } else {
+    recipe.bookmarked = false;
+  }
 
   const decreaseServingsHandler = (event) => {
     dispatch(recipeActions.updateServings(-1));
@@ -19,6 +35,10 @@ const RecipeDetails = () => {
 
   const increaseServingsHandler = (event) => {
     dispatch(recipeActions.updateServings(1));
+  };
+
+  const addBookmarkHandler = () => {
+    dispatch(recipeActions.addBookmark(recipe));
   };
 
   return (
@@ -87,9 +107,14 @@ const RecipeDetails = () => {
 
             <button
               className={`${classes["btn--round"]} ${classes["btn--bookmark"]}`}
+              onClick={addBookmarkHandler}
             >
               <svg>
-                <use href={`${Icons}#icon-bookmark`}></use>
+                <use
+                  href={`${Icons}#${
+                    recipe.bookmarked ? "icon-bookmark-fill" : "icon-bookmark"
+                  }`}
+                ></use>
               </svg>
             </button>
 
@@ -107,7 +132,7 @@ const RecipeDetails = () => {
             <ul className={classes["recipe__ingredient-list"]}>
               {recipe.ingredients.map((ingr) => (
                 <li
-                  key={ingr.description}
+                  key={`${ingr.description}${Math.random() * 100}`}
                   className={classes.recipe__ingredient}
                 >
                   <svg className={classes.recipe__icon}>

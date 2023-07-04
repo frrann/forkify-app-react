@@ -13,7 +13,7 @@ export const recipeSlice = createSlice({
   name: "recipe",
   initialState,
   reducers: {
-    setRecipe(state, action) {
+    loadRecipe(state, action) {
       state.recipe = action.payload;
     },
     updateServings(state, action) {
@@ -35,6 +35,23 @@ export const recipeSlice = createSlice({
     },
     replaceResults(state, action) {
       state.search.results = action.payload.recipes;
+    },
+    loadBookmarks(state, action) {
+      const bookmarks = localStorage.getItem("bookmarks");
+      if (bookmarks) state.bookmarks = JSON.parse(bookmarks);
+    },
+    addBookmark(state, action) {
+      if (action.payload.bookmarked) {
+        state.bookmarks = state.bookmarks.filter(
+          (recipe) => recipe.id !== action.payload.id
+        );
+        state.recipe.bookmarked = false;
+      } else {
+        state.bookmarks.push(action.payload);
+        state.recipe.bookmarked = true;
+        console.log(state.recipe);
+      }
+      localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
     },
   },
 });

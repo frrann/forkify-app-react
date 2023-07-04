@@ -3,7 +3,6 @@ import Icons from "../../assets/images/icons.svg";
 import classes from "./LoadingSpinner.module.scss";
 
 const LoadingSpinner = () => {
-  console.log("SPINNING");
   return (
     <div className={classes.spinner}>
       <svg>

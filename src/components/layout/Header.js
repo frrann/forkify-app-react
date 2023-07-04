@@ -1,12 +1,27 @@
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { recipeActions } from "../../store/recipe-slice";
 
 import SearchBar from "./SearchBar";
+import BookmarksList from "../recipes/BookmarksList";
 import Logo from "../../assets/images/logo.png";
 import Icons from "../../assets/images/icons.svg";
 
 import classes from "./Header.module.scss";
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const [showBookmarks, setShowBookmarks] = useState(false);
+
+  useEffect(() => {
+    dispatch(recipeActions.loadBookmarks());
+  }, [dispatch]);
+
+  const showBookmarksListHandler = () => {
+    setShowBookmarks((prevState) => !prevState);
+  };
+
   const navContent = (
     <nav className={classes.nav}>
       <ul className={classes.nav__list}>
@@ -23,24 +38,18 @@ const Header = () => {
         <li className={classes.nav__item}>
           <button
             className={`${classes.nav__btn} ${classes["nav__btn--bookmarks"]}`}
+            onClick={showBookmarksListHandler}
           >
             <svg className={classes.nav__icon}>
-              <use href={`${Icons}#icon-bookmark`}></use>
+              <use
+                href={`${Icons}#${
+                  showBookmarks ? "icon-bookmark-fill" : "icon-bookmark"
+                }`}
+              ></use>
             </svg>
             <span>Bookmarks</span>
           </button>
-          <div className={classes.bookmarks}>
-            <ul className={classes.bookmarks__list}>
-              <div className={classes.message}>
-                <div>
-                  <svg>
-                    <use href={`${Icons}#icon-alert-triangle`}></use>
-                  </svg>
-                </div>
-                <p>No bookmarks yet. Find a nice recipe and bookmark it :)</p>
-              </div>
-            </ul>
-          </div>
+          <BookmarksList active={showBookmarks} />
         </li>
       </ul>
     </nav>
