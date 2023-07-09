@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoading: false,
-  error: "",
+  notification: null,
 };
 
 export const uiSlice = createSlice({
@@ -12,8 +12,12 @@ export const uiSlice = createSlice({
     setIsLoading(state, action) {
       state.isLoading = action.payload;
     },
-    setError(state, action) {
-      state.error = action.payload;
+    setNotification(state, action) {
+      state.notification = {
+        status: action.payload.status,
+        title: action.payload.title,
+        message: action.payload.message,
+      };
     },
   },
 });

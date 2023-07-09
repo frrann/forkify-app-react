@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { useNavigation, useLoaderData } from "react-router-dom";
+import { useNavigation } from "react-router-dom";
 import { recipeActions } from "../../store/recipe-slice";
 
 import LoadingSpinner from "../UI/LoadingSpinner";
@@ -9,25 +8,9 @@ import classes from "./RecipeItemDetails.module.scss";
 
 const RecipeDetails = () => {
   const dispatch = useDispatch();
-  const { data } = useLoaderData();
-  const crtRecipe = data.recipe;
+  const recipe = useSelector((state) => state.recipe.recipe);
 
-  useEffect(() => {
-    dispatch(recipeActions.loadRecipe(crtRecipe));
-  }, [crtRecipe, dispatch]);
-
-  const bookmarks = useSelector((state) => state.recipe.bookmarks);
   const navigation = useNavigation();
-
-  const recipe = { ...crtRecipe };
-  if (
-    bookmarks.length !== 0 &&
-    bookmarks.some((bookmark) => bookmark.id === recipe.id)
-  ) {
-    recipe.bookmarked = true;
-  } else {
-    recipe.bookmarked = false;
-  }
 
   const decreaseServingsHandler = (event) => {
     dispatch(recipeActions.updateServings(-1));

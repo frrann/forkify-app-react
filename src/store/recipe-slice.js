@@ -42,14 +42,13 @@ export const recipeSlice = createSlice({
     },
     addBookmark(state, action) {
       if (action.payload.bookmarked) {
+        state.recipe.bookmarked = false;
         state.bookmarks = state.bookmarks.filter(
           (recipe) => recipe.id !== action.payload.id
         );
-        state.recipe.bookmarked = false;
       } else {
-        state.bookmarks.push(action.payload);
         state.recipe.bookmarked = true;
-        console.log(state.recipe);
+        state.bookmarks.push(state.recipe);
       }
       localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
     },

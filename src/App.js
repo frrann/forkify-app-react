@@ -4,8 +4,7 @@ import RootLayout from "./pages/RootLayout";
 import ErrorPage from "./pages/Error";
 import RecipesPage from "./pages/Recipes";
 import RecipeDetailsPage from "./pages/RecipeDetails";
-
-import { recipeLoader } from "./pages/RecipeDetails";
+import NewRecipePage from "./pages/NewRecipe";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -20,11 +19,13 @@ const App = () => {
           children: [
             {
               path: ":id",
-              id: "recipe-details",
               element: <RecipeDetailsPage />,
-              loader: recipeLoader,
             },
           ],
+        },
+        {
+          path: "new-recipe",
+          element: <NewRecipePage />,
         },
       ],
     },

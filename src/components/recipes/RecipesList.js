@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchResults } from "../../store/recipe-actions";
 
 import RecipeItem from "./RecipeItem";
 import LoadingSpinner from "../UI/LoadingSpinner";
+import Notification from "../UI/Notification";
 
-import { fetchResults } from "../../store/recipe-actions";
-
-import Icons from "../../assets/images/icons.svg";
 import classes from "./RecipesList.module.scss";
 
 const RecipesList = () => {
@@ -14,7 +13,7 @@ const RecipesList = () => {
   const searchQuery = useSelector((state) => state.recipe.search.query);
   const searchResults = useSelector((state) => state.recipe.search.results);
   const isLoading = useSelector((state) => state.ui.isLoading);
-  const error = useSelector((state) => state.ui.error);
+  const notification = useSelector((state) => state.ui.notification);
 
   useEffect(() => {
     if (searchQuery.length !== 0) {
@@ -24,31 +23,17 @@ const RecipesList = () => {
 
   return (
     <>
-      {error && (
-        <div>
-          <div className={classes.error}>
-            <div>
-              <svg>
-                <use href={`${Icons}#icon-alert-triangle`}></use>
-              </svg>
-            </div>
-            <p>{error}</p>
-          </div>
-        </div>
+      {notification && searchResults.length === 0 && (
+        <Notification notification={notification} />
       )}
-      {!isLoading && searchResults.length === 0 && (
-        <div>
-          <div className={classes.message}>
-            <div>
-              <svg>
-                <use href={`${Icons}#icon-smile`}></use>
-              </svg>
-            </div>
-            <p>
-              Start by searching for a recipe or an ingredient. Have fun!!!!
-            </p>
-          </div>
-        </div>
+      {!isLoading && searchResults.length === 0 && !notification && (
+        <Notification
+          notification={{
+            status: "success",
+            message:
+              "Start by searching for a recipe or an ingredient. Have fun!!!!",
+          }}
+        />
       )}
       {!isLoading && searchResults.length !== 0 && (
         <div className={classes["search-results"]}>
