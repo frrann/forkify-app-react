@@ -125,9 +125,10 @@ const RecipeDetails = () => {
                     {ingr.quantity}
                   </div>
                   <div className={classes.recipe__description}>
-                    <span className={classes.recipe__unit}>
-                      {ingr.description}
+                    <span className={classes.recipe__quantity}>
+                      {ingr.unit}
                     </span>
+                    {ingr.description}
                   </div>
                 </li>
               ))}

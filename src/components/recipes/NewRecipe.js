@@ -1,14 +1,17 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { sendData } from "../../store/recipe-actions";
+import { uiActions } from "../../store/ui-slice";
 
 import LoadingSpinner from "../UI/LoadingSpinner";
+import Notification from "../UI/Notification";
+import Input from "../UI/Input";
+
 import Icons from "../../assets/images/icons.svg";
 
 import classes from "./NewRecipe.module.scss";
-import Notification from "../UI/Notification";
 
 const NewRecipe = () => {
   const titleInputRef = useRef();
@@ -17,12 +20,30 @@ const NewRecipe = () => {
   const publisherInputRef = useRef();
   const prepTimeInputRef = useRef();
   const servingsInputRef = useRef();
-  const ingredient1 = useRef();
-  const ingredient2 = useRef();
-  const ingredient3 = useRef();
-  const ingredient4 = useRef();
-  const ingredient5 = useRef();
-  const ingredient6 = useRef();
+
+  const initialIngredientState = { quantity: 0, unit: "", description: "" };
+
+  const [ingredientsList, setIngredientsList] = useState([
+    initialIngredientState,
+  ]);
+
+  const addIngredientHandler = () => {
+    if (ingredientsList.length < 6) {
+      setIngredientsList([...ingredientsList, initialIngredientState]);
+    }
+  };
+
+  const removeIngredientHandler = (index) => {
+    const updatedIngredients = [...ingredientsList];
+    updatedIngredients.splice(index, 1);
+    setIngredientsList(updatedIngredients);
+  };
+
+  const inputChangeHandler = (index, updatedIngredient) => {
+    const updatedIngredients = [...ingredientsList];
+    updatedIngredients[index] = updatedIngredient;
+    setIngredientsList(updatedIngredients);
+  };
 
   const navigate = useNavigate();
 
@@ -33,28 +54,6 @@ const NewRecipe = () => {
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
-    const ingredients = [
-      ingredient1,
-      ingredient2,
-      ingredient3,
-      ingredient4,
-      ingredient5,
-      ingredient6,
-    ]
-      .map((ingr) => ingr.current.value)
-      .map((ingr) => {
-        const ingrArr = ingr.split(",").map((el) => el.trim());
-
-        if (ingrArr.length !== 3) throw new Error("Wrong ingredient format");
-
-        const [quantity, unit, description] = ingrArr;
-        return {
-          quantity: quantity ? +quantity : null,
-          unit,
-          description,
-        };
-      });
-
     const newRecipe = {
       title: titleInputRef.current.value,
       source_url: urlInputRef.current.value,
@@ -62,7 +61,7 @@ const NewRecipe = () => {
       publisher: publisherInputRef.current.value,
       cooking_time: +prepTimeInputRef.current.value,
       servings: servingsInputRef.current.value,
-      ingredients,
+      ingredients: ingredientsList,
     };
 
     dispatch(sendData(newRecipe));
@@ -70,6 +69,7 @@ const NewRecipe = () => {
 
   const closeModalHandler = () => {
     navigate("..");
+    dispatch(uiActions.setNotification(null));
   };
 
   return (
@@ -104,48 +104,36 @@ const NewRecipe = () => {
           <div className={classes.upload__column}>
             <h3 className={classes.upload__heading}>Ingredients</h3>
 
-            <label htmlFor="ingredient-1">Ingredient 1</label>
-            <input
-              id="ingredient-1"
-              type="text"
-              placeholder="Format: 'Quantity, Unit, Description'"
-              ref={ingredient1}
-            />
-            <label htmlFor="ingredient-2">Ingredient 2</label>
-            <input
-              id="ingredient-2"
-              type="text"
-              placeholder="Format: 'Quantity, Unit, Description'"
-              ref={ingredient2}
-            />
-            <label htmlFor="ingredient-3">Ingredient 3</label>
-            <input
-              id="ingredient-3"
-              type="text"
-              placeholder="Format: 'Quantity, Unit, Description'"
-              ref={ingredient3}
-            />
-            <label htmlFor="ingredient-4">Ingredient 4</label>
-            <input
-              id="ingredient-4"
-              type="text"
-              placeholder="Format: 'Quantity, Unit, Description'"
-              ref={ingredient4}
-            />
-            <label htmlFor="ingredient-5">Ingredient 5</label>
-            <input
-              id="ingredient-5"
-              type="text"
-              placeholder="Format: 'Quantity, Unit, Description'"
-              ref={ingredient5}
-            />
-            <label htmlFor="ingredient-6">Ingredient 6</label>
-            <input
-              id="ingredient-6"
-              type="text"
-              placeholder="Format: 'Quantity, Unit, Description'"
-              ref={ingredient6}
-            />
+            <div
+              style={{
+                gridColumnStart: 1,
+                gridColumnEnd: 3,
+              }}
+            >
+              {ingredientsList.map((ingr, index) => (
+                <Input
+                  key={`ingredient${index}`}
+                  index={index}
+                  ingredient={ingr}
+                  onIngredientChange={(updatedIngredient) =>
+                    inputChangeHandler(index, updatedIngredient)
+                  }
+                  onRemoveIngredient={removeIngredientHandler}
+                />
+              ))}
+              {ingredientsList.length < 6 && (
+                <button
+                  className={`${classes.btn} ${classes.upload__btn}`}
+                  type="button"
+                  onClick={addIngredientHandler}
+                >
+                  <svg>
+                    <use href={`${Icons}#icon-upload-cloud`}></use>
+                  </svg>
+                  <span>Add new ingredient</span>
+                </button>
+              )}
+            </div>
           </div>
 
           <button
