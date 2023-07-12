@@ -49,10 +49,17 @@ export const sendData = (data) => {
       if (!response.ok) {
         throw new Error("Uploading recipe failed.");
       }
+
+      const responseData = await response.json();
+      return responseData.data.recipe;
     };
 
     try {
-      await sendRequest();
+      const recipe = await sendRequest();
+
+      dispatch(recipeActions.loadRecipe(recipe));
+      dispatch(recipeActions.addBookmark(recipe));
+
       dispatch(
         uiActions.setNotification({
           status: "success",

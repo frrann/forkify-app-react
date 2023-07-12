@@ -50,6 +50,7 @@ const NewRecipe = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.ui.isLoading);
   const notification = useSelector((state) => state.ui.notification);
+  const newRecipe = useSelector((state) => state.recipe.recipe);
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
@@ -68,7 +69,7 @@ const NewRecipe = () => {
   };
 
   const closeModalHandler = () => {
-    navigate("..");
+    navigate(`../${newRecipe.id}`);
     dispatch(uiActions.setNotification(null));
   };
 
