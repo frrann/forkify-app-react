@@ -26,14 +26,15 @@ const Header = () => {
     <nav className={classes.nav}>
       <ul className={classes.nav__list}>
         <li className={classes.nav__item}>
-          <button
+          <Link
+            to="new-recipe"
             className={`${classes.nav__btn} ${classes["nav__btn--add-recipe"]}`}
           >
             <svg className={classes.nav__icon}>
               <use href={`${Icons}#icon-edit`}></use>
             </svg>
             <span>Add recipe</span>
-          </button>
+          </Link>
         </li>
         <li className={classes.nav__item}>
           <button

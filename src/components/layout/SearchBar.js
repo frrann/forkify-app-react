@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { recipeActions } from "../../store/recipe-slice";
+import { fetchResults } from "../../store/recipe-actions";
 
 import Icons from "../../assets/images/icons.svg";
 
@@ -11,6 +12,7 @@ const SearchBar = () => {
   const searchHandler = (event) => {
     event.preventDefault();
     dispatch(recipeActions.setQuery({ query: event.target.search.value }));
+    dispatch(fetchResults(event.target.search.value));
   };
 
   return (
