@@ -69,7 +69,11 @@ const NewRecipe = () => {
   };
 
   const closeModalHandler = () => {
-    navigate(`../${newRecipe.id}`);
+    if (Object.keys(newRecipe).length !== 0) {
+      navigate(`../${newRecipe.id}`);
+    } else {
+      navigate("..");
+    }
     dispatch(uiActions.setNotification(null));
   };
 
