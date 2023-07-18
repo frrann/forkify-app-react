@@ -34,10 +34,19 @@ const RecipesList = () => {
 
   return (
     <>
+      {(!searchResults ||
+        (Array.isArray(searchResults) && searchResults.length === 0)) && (
+        <Notification
+          notification={{
+            status: "error",
+            message: "No recipes found for your query! Please try again!",
+          }}
+        />
+      )}
       {notification && searchResults.length === 0 && (
         <Notification notification={notification} />
       )}
-      {!isLoading && searchResults.length === 0 && !notification && (
+      {searchResults.length === 0 && !notification && (
         <Notification
           notification={{
             status: "success",
@@ -46,7 +55,7 @@ const RecipesList = () => {
           }}
         />
       )}
-      {!isLoading && searchResults.length !== 0 && (
+      {searchResults.length !== 0 && (
         <div className={classes["search-results"]}>
           <ul className={classes.results}>
             {newSearchResults.map((recipe) => (

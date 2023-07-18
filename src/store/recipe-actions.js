@@ -10,22 +10,34 @@ export const fetchResults = (query) => {
         `https://forkify-api.herokuapp.com/api/v2/recipes?search=${query}&key=0a5b5dab-cd85-4d6f-95c5-b897efe52237`
       );
 
+      const responseData = await response.json();
+
       if (!response.ok) {
         throw new Error("Could not fetch recipes list!");
       }
-
-      const responseData = await response.json();
 
       return responseData.data.recipes;
     };
 
     try {
-      const recipes = await fetchRecipes();
+      const data = await fetchRecipes();
+
+      const recipes = data.map((recipe) => {
+        return {
+          id: recipe.id,
+          title: recipe.title,
+          publisher: recipe.publisher,
+          image: recipe.image_url,
+          ...(recipe.key && { key: recipe.key }),
+        };
+      });
+
       dispatch(recipeActions.replaceResults({ recipes: recipes }));
     } catch (error) {
       dispatch(
         uiActions.setNotification({ status: "error", message: error.message })
       );
+      throw error;
     }
     dispatch(uiActions.setIsLoading(false));
   };
