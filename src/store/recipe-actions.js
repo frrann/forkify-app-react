@@ -4,6 +4,7 @@ import { uiActions } from "./ui-slice";
 export const fetchResults = (query) => {
   return async (dispatch) => {
     dispatch(uiActions.setIsLoading(true));
+    dispatch(uiActions.setNotification(null));
 
     const fetchRecipes = async () => {
       const response = await fetch(
@@ -46,6 +47,7 @@ export const fetchResults = (query) => {
 export const sendData = (data) => {
   return async (dispatch) => {
     dispatch(uiActions.setIsLoading(true));
+    dispatch(uiActions.setNotification(null));
 
     const sendRequest = async () => {
       const response = await fetch(
@@ -76,7 +78,7 @@ export const sendData = (data) => {
       dispatch(
         uiActions.setNotification({
           status: "success",
-          message: "Recipe was successfully uploaded :)",
+          message: "Recipe was successfully uploaded.",
         })
       );
     } catch (error) {
@@ -91,6 +93,7 @@ export const sendData = (data) => {
 export const getRecipe = (id, bookmarks) => {
   return async (dispatch) => {
     dispatch(uiActions.setIsLoading(true));
+    dispatch(uiActions.setNotification(null));
 
     const fetchRecipe = async () => {
       const response = await fetch(
@@ -127,6 +130,7 @@ export const getRecipe = (id, bookmarks) => {
 
 export const deleteRecipe = (id) => {
   return async (dispatch) => {
+    dispatch(uiActions.setNotification(null));
     dispatch(uiActions.setIsLoading(true));
 
     const deleteRequest = async () => {
@@ -148,7 +152,7 @@ export const deleteRecipe = (id) => {
       dispatch(
         uiActions.setNotification({
           status: "success",
-          message: "Recipe was successfully deleted :)",
+          message: "Recipe was successfully deleted.",
         })
       );
     } catch (error) {

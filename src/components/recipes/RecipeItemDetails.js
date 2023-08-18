@@ -143,7 +143,7 @@ const RecipeDetails = () => {
               <ul className={classes["recipe__ingredient-list"]}>
                 {recipe.ingredients.map((ingr) => (
                   <li
-                    key={`${ingr.description}${Math.random() * 100}`}
+                    key={`${recipe.title}${ingr.quantity}${ingr.unit}${ingr.description}`}
                     className={classes.recipe__ingredient}
                   >
                     <svg className={classes.recipe__icon}>

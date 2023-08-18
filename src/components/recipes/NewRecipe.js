@@ -1,12 +1,14 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 
 import { sendData } from "../../store/recipe-actions";
 import { uiActions } from "../../store/ui-slice";
 
 import LoadingSpinner from "../UI/LoadingSpinner";
 import Notification from "../UI/Notification";
+import IngredientInput from "../UI/IngredientInput";
 import Input from "../UI/Input";
 
 import Icons from "../../assets/images/icons.svg";
@@ -14,14 +16,12 @@ import Icons from "../../assets/images/icons.svg";
 import classes from "./NewRecipe.module.scss";
 
 const NewRecipe = () => {
-  const titleInputRef = useRef();
-  const urlInputRef = useRef();
-  const imageInputRef = useRef();
-  const publisherInputRef = useRef();
-  const prepTimeInputRef = useRef();
-  const servingsInputRef = useRef();
-
   const initialIngredientState = { quantity: 0, unit: "", description: "" };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const [ingredientsList, setIngredientsList] = useState([
     initialIngredientState,
@@ -52,16 +52,14 @@ const NewRecipe = () => {
   const notification = useSelector((state) => state.ui.notification);
   const newRecipe = useSelector((state) => state.recipe.recipe);
 
-  const formSubmitHandler = (event) => {
-    event.preventDefault();
-
+  const formSubmitHandler = (data) => {
     const newRecipe = {
-      title: titleInputRef.current.value,
-      source_url: urlInputRef.current.value,
-      image_url: imageInputRef.current.value,
-      publisher: publisherInputRef.current.value,
-      cooking_time: +prepTimeInputRef.current.value,
-      servings: servingsInputRef.current.value,
+      title: data.title,
+      source_url: data.source_url,
+      image_url: data.image_url,
+      publisher: data.publisher,
+      cooking_time: +data.cooking_time,
+      servings: data.servings,
       ingredients: ingredientsList,
     };
 
@@ -89,21 +87,85 @@ const NewRecipe = () => {
       {isLoading && <LoadingSpinner />}
       {notification && <Notification notification={notification} />}
       {!isLoading && !notification && (
-        <form className={classes.upload} onSubmit={formSubmitHandler}>
+        <form
+          className={classes.upload}
+          onSubmit={handleSubmit(formSubmitHandler)}
+        >
           <div className={classes.upload__column}>
             <h3 className={classes.upload__heading}>Recipe data</h3>
-            <label htmlFor="title">Title</label>
-            <input id="title" type="text" ref={titleInputRef} />
-            <label htmlFor="url">URL</label>
-            <input id="url" type="text" ref={urlInputRef} />
-            <label htmlFor="image_url">Image URL</label>
-            <input id="image_url" type="text" ref={imageInputRef} />
-            <label htmlFor="publisher">Publisher</label>
-            <input id="publisher" type="text" ref={publisherInputRef} />
-            <label htmlFor="prep_time">Prep time</label>
-            <input id="prep_time" type="number" ref={prepTimeInputRef} />
-            <label htmlFor="servings">Servings</label>
-            <input id="servings" type="text" ref={servingsInputRef} />
+
+            <Input
+              className={`${classes.upload__input} ${
+                errors.title ? classes.invalid : null
+              }`}
+              label="Title"
+              type="text"
+              name="title"
+              register={register}
+              errors={errors}
+              message="This field is required"
+            />
+
+            <Input
+              className={`${classes.upload__input} ${
+                errors.source_url ? classes.invalid : null
+              }`}
+              label="URL"
+              type="text"
+              name="source_url"
+              register={register}
+              isUrl={true}
+              errors={errors}
+              message="This field is required"
+            />
+
+            <Input
+              className={`${classes.upload__input} ${
+                errors.image_url ? classes.invalid : null
+              }`}
+              label="Image URL"
+              type="text"
+              name="image_url"
+              register={register}
+              errors={errors}
+              message="This field is required"
+            />
+
+            <Input
+              className={`${classes.upload__input} ${
+                errors.publisher ? classes.invalid : null
+              }`}
+              label="Publisher"
+              type="text"
+              name="publisher"
+              register={register}
+              errors={errors}
+              message="This field is required"
+            />
+
+            <Input
+              className={`${classes.upload__input} ${
+                errors.cooking_time ? classes.invalid : null
+              }`}
+              label="Prep time"
+              type="number"
+              name="cooking_time"
+              register={register}
+              errors={errors}
+              message="This field is required"
+            />
+
+            <Input
+              className={`${classes.upload__input} ${
+                errors.servings ? classes.invalid : null
+              }`}
+              label="Servings"
+              type="number"
+              name="servings"
+              register={register}
+              errors={errors}
+              message="This field is required"
+            />
           </div>
 
           <div className={classes.upload__column}>
@@ -116,7 +178,7 @@ const NewRecipe = () => {
               }}
             >
               {ingredientsList.map((ingr, index) => (
-                <Input
+                <IngredientInput
                   key={`ingredient${index}`}
                   index={index}
                   ingredient={ingr}

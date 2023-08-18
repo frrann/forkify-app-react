@@ -71,7 +71,7 @@ const RecipesList = () => {
           />
         </div>
       )}
-      {isLoading && <LoadingSpinner />}
+      {/* {isLoading && <LoadingSpinner />} */}
     </>
   );
 };

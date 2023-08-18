@@ -37,7 +37,7 @@
   &__column {
     display: grid;
     grid-template-columns: 1fr 2.8fr;
-    align-items: center;
+    align-items: start;
     gap: 1.5rem;
 
     & label {
@@ -68,6 +68,26 @@
       grid-column: 1 / span 2;
       justify-self: center;
       margin-top: 1rem;
+    }
+  }
+
+  &__input {
+    display: grid;
+  }
+
+  & .invalid {
+    & input {
+      border-color: hsl(0, 100%, 67%);
+
+      &:focus {
+        outline: none;
+        border-color: hsl(0, 100%, 67%);
+      }
+    }
+
+    & span {
+      color: hsl(0, 100%, 67%);
+      font-size: 12px;
     }
   }
 

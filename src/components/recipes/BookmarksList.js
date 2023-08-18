@@ -21,7 +21,7 @@ const BookmarksList = ({ active }) => {
                 <use href={`${Icons}#icon-alert-triangle`}></use>
               </svg>
             </div>
-            <p>No bookmarks yet. Find a nice recipe and bookmark it :)</p>
+            <p>No bookmarks yet. Find a nice recipe and bookmark it.</p>
           </div>
         )}
         {bookmarks.length !== 0 &&
