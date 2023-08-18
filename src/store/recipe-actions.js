@@ -27,7 +27,7 @@ export const fetchResults = (query) => {
           id: recipe.id,
           title: recipe.title,
           publisher: recipe.publisher,
-          image: recipe.image_url,
+          image_url: recipe.image_url,
           ...(recipe.key && { key: recipe.key }),
         };
       });

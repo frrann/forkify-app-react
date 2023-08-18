@@ -29,12 +29,13 @@ const RecipesList = () => {
   useEffect(() => {
     if (searchQuery.length !== 0) {
       dispatch(fetchResults(searchQuery));
+      setCurrentPage(1);
     }
   }, [dispatch, searchQuery]);
 
   return (
     <>
-      {(!searchResults ||
+      {/* {(!searchResults ||
         (Array.isArray(searchResults) && searchResults.length === 0)) && (
         <Notification
           notification={{
@@ -42,7 +43,7 @@ const RecipesList = () => {
             message: "No recipes found for your query! Please try again!",
           }}
         />
-      )}
+      )} */}
       {notification && searchResults.length === 0 && (
         <Notification notification={notification} />
       )}
