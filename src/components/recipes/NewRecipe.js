@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 
 import { sendData } from "../../store/recipe-actions";
-import { uiActions } from "../../store/ui-slice";
 
 import LoadingSpinner from "../UI/LoadingSpinner";
 import Notification from "../UI/Notification";
@@ -27,6 +26,12 @@ const NewRecipe = () => {
     initialIngredientState,
   ]);
 
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.ui.isLoading);
+  const crtRecipe = useSelector((state) => state.recipe.recipe);
+
   const addIngredientHandler = () => {
     if (ingredientsList.length < 6) {
       setIngredientsList([...ingredientsList, initialIngredientState]);
@@ -45,12 +50,13 @@ const NewRecipe = () => {
     setIngredientsList(updatedIngredients);
   };
 
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.ui.isLoading);
-  const notification = useSelector((state) => state.ui.notification);
-  const newRecipe = useSelector((state) => state.recipe.recipe);
+  const closeModalHandler = () => {
+    if (Object.keys(crtRecipe).length !== 0) {
+      navigate(`../${crtRecipe.id}`);
+    } else {
+      navigate("..");
+    }
+  };
 
   const formSubmitHandler = (data) => {
     const newRecipe = {
@@ -64,15 +70,10 @@ const NewRecipe = () => {
     };
 
     dispatch(sendData(newRecipe));
-  };
 
-  const closeModalHandler = () => {
-    if (Object.keys(newRecipe).length !== 0) {
-      navigate(`../${newRecipe.id}`);
-    } else {
-      navigate("..");
-    }
-    dispatch(uiActions.setNotification(null));
+    setTimeout(() => {
+      navigate(`../${crtRecipe.id}`);
+    }, 2000);
   };
 
   return (
@@ -85,8 +86,7 @@ const NewRecipe = () => {
         &times;
       </button>
       {isLoading && <LoadingSpinner />}
-      {notification && <Notification notification={notification} />}
-      {!isLoading && !notification && (
+      {!isLoading && (
         <form
           className={classes.upload}
           onSubmit={handleSubmit(formSubmitHandler)}
@@ -127,6 +127,7 @@ const NewRecipe = () => {
               type="text"
               name="image_url"
               register={register}
+              isUrl={true}
               errors={errors}
               message="This field is required"
             />

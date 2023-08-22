@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { recipeActions } from "../../store/recipe-slice";
 import { fetchResults } from "../../store/recipe-actions";
 
