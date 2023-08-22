@@ -8,7 +8,7 @@ const RecipeItem = ({ recipe }) => {
     <li className="preview">
       <Link to={recipe.id} className={classes["preview__link"]}>
         <figure className={classes.preview__fig}>
-          <img src={recipe.image} alt={recipe.title} />
+          <img src={recipe.image_url} alt={recipe.title} />
         </figure>
         <div className={classes.preview__data}>
           <h4 className={classes.preview__title}>{recipe.title}</h4>

@@ -1,67 +1,33 @@
-import classes from "./Input.module.scss";
-
 const Input = ({
-  index,
-  ingredient,
-  onIngredientChange,
-  onRemoveIngredient,
+  className,
+  label,
+  type,
+  name,
+  register,
+  isUrl = false,
+  errors,
+  message,
 }) => {
-  const inputChangeHandler = (event) => {
-    const { id, value } = event.target;
-
-    onIngredientChange({ ...ingredient, [id]: value });
+  const isUrlRule = {
+    pattern:
+      /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi,
   };
 
-  const removeIngredientHandler = () => {
-    onRemoveIngredient(index);
-  };
+  let options = { required: true };
+
+  if (isUrl) options = { required: true, ...isUrlRule };
 
   return (
-    <div className={classes.input}>
-      <h3>Ingredient {index + 1}</h3>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <input
-          style={{ width: "22%" }}
-          id="quantity"
-          type="number"
-          className={classes.input__quantity}
-          placeholder="Quantity"
-          value={ingredient.quantity}
-          onChange={inputChangeHandler}
-        />
-        <input
-          style={{ width: "22%" }}
-          id="unit"
-          type="text"
-          className={classes.input__unit}
-          placeholder="Unit"
-          value={ingredient.unit}
-          onChange={inputChangeHandler}
-        />
-        <input
-          style={{ width: "44%" }}
-          id="description"
-          type="text"
-          className={classes.input__description}
-          placeholder="Description"
-          value={ingredient.description}
-          onChange={inputChangeHandler}
-        />
-        <button
-          className={classes["btn--close-modal"]}
-          type="button"
-          onClick={removeIngredientHandler}
-        >
-          &times;
-        </button>
+    <>
+      <label htmlFor={name}>{label}</label>
+      <div className={className}>
+        <input id={name} type={type} {...register(name, options)} />
+        {errors[name]?.type === "required" && <span>{message}</span>}
+        {isUrl && errors[name]?.type === "pattern" && (
+          <span>Please add a valid URL</span>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

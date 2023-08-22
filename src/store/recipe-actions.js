@@ -3,8 +3,6 @@ import { uiActions } from "./ui-slice";
 
 export const fetchResults = (query) => {
   return async (dispatch) => {
-    dispatch(uiActions.setIsLoading(true));
-
     const fetchRecipes = async () => {
       const response = await fetch(
         `https://forkify-api.herokuapp.com/api/v2/recipes?search=${query}&key=0a5b5dab-cd85-4d6f-95c5-b897efe52237`
@@ -20,6 +18,7 @@ export const fetchResults = (query) => {
     };
 
     try {
+      dispatch(uiActions.setIsLoading(true));
       const data = await fetchRecipes();
 
       const recipes = data.map((recipe) => {
@@ -27,16 +26,13 @@ export const fetchResults = (query) => {
           id: recipe.id,
           title: recipe.title,
           publisher: recipe.publisher,
-          image: recipe.image_url,
+          image_url: recipe.image_url,
           ...(recipe.key && { key: recipe.key }),
         };
       });
 
-      dispatch(recipeActions.replaceResults({ recipes: recipes }));
+      await dispatch(recipeActions.replaceResults({ recipes: recipes }));
     } catch (error) {
-      dispatch(
-        uiActions.setNotification({ status: "error", message: error.message })
-      );
       throw error;
     }
     dispatch(uiActions.setIsLoading(false));
@@ -72,17 +68,8 @@ export const sendData = (data) => {
 
       dispatch(recipeActions.loadRecipe(recipe));
       dispatch(recipeActions.addBookmark(recipe));
-
-      dispatch(
-        uiActions.setNotification({
-          status: "success",
-          message: "Recipe was successfully uploaded :)",
-        })
-      );
     } catch (error) {
-      dispatch(
-        uiActions.setNotification({ status: "error", message: error.message })
-      );
+      throw error;
     }
     dispatch(uiActions.setIsLoading(false));
   };
@@ -90,8 +77,6 @@ export const sendData = (data) => {
 
 export const getRecipe = (id, bookmarks) => {
   return async (dispatch) => {
-    dispatch(uiActions.setIsLoading(true));
-
     const fetchRecipe = async () => {
       const response = await fetch(
         `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
@@ -117,18 +102,13 @@ export const getRecipe = (id, bookmarks) => {
       const recipe = await fetchRecipe();
       dispatch(recipeActions.loadRecipe(recipe));
     } catch (error) {
-      dispatch(
-        uiActions.setNotification({ status: "error", message: error.message })
-      );
+      throw error;
     }
-    dispatch(uiActions.setIsLoading(false));
   };
 };
 
 export const deleteRecipe = (id) => {
   return async (dispatch) => {
-    dispatch(uiActions.setIsLoading(true));
-
     const deleteRequest = async () => {
       const response = await fetch(
         `https://forkify-api.herokuapp.com/api/v2/recipes/${id}?key=0a5b5dab-cd85-4d6f-95c5-b897efe52237`,
@@ -144,18 +124,8 @@ export const deleteRecipe = (id) => {
 
     try {
       await deleteRequest();
-
-      dispatch(
-        uiActions.setNotification({
-          status: "success",
-          message: "Recipe was successfully deleted :)",
-        })
-      );
     } catch (error) {
-      dispatch(
-        uiActions.setNotification({ status: "error", message: error.message })
-      );
+      throw error;
     }
-    dispatch(uiActions.setIsLoading(false));
   };
 };

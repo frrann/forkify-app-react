@@ -6,17 +6,16 @@ import { deleteRecipe, fetchResults } from "../../store/recipe-actions";
 
 import LoadingSpinner from "../UI/LoadingSpinner";
 import Icons from "../../assets/images/icons.svg";
-import Notification from "../UI/Notification";
 
 import fracty from "fracty";
 import classes from "./RecipeItemDetails.module.scss";
+import { useState } from "react";
 
 const RecipeDetails = () => {
   const dispatch = useDispatch();
   const recipe = useSelector((state) => state.recipe.recipe);
   const query = useSelector((state) => state.recipe.search.query);
-  const notification = useSelector((state) => state.ui.notification);
-
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
   const navigate = useNavigate();
 
@@ -33,22 +32,25 @@ const RecipeDetails = () => {
   };
 
   const deleteRecipeHandler = () => {
+    setIsLoading(true);
     dispatch(deleteRecipe(recipe.id));
     dispatch(recipeActions.addBookmark(recipe));
 
-    if (query.length !== 0) {
-      dispatch(fetchResults(query));
-    }
-
-    navigate("../");
+    setTimeout(() => {
+      if (query.length !== 0) {
+        dispatch(fetchResults(query));
+      }
+      setIsLoading(false);
+      navigate("../");
+    }, 1500);
   };
 
   return (
     <>
-      {navigation.state === "loading" && <LoadingSpinner />}
-      {Object.keys(recipe).length !== 0 &&
+      {isLoading && <LoadingSpinner />}
+      {!isLoading &&
         navigation.state === "idle" &&
-        !notification && (
+        Object.keys(recipe).length !== 0 && (
           <div className={classes.recipe}>
             <figure className={classes.recipe__fig}>
               <img
@@ -143,7 +145,7 @@ const RecipeDetails = () => {
               <ul className={classes["recipe__ingredient-list"]}>
                 {recipe.ingredients.map((ingr) => (
                   <li
-                    key={`${ingr.description}${Math.random() * 100}`}
+                    key={`${recipe.title}${ingr.quantity}${ingr.unit}${ingr.description}`}
                     className={classes.recipe__ingredient}
                   >
                     <svg className={classes.recipe__icon}>
@@ -184,7 +186,6 @@ const RecipeDetails = () => {
             </div>
           </div>
         )}
-      {notification && <Notification notification={notification} />}
     </>
   );
 };
