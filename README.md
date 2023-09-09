@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+[![Project Status: Work in Progress](https://img.shields.io/badge/Project%20Status-Work%20in%20Progress-orange)](https://frrann-forkify-react.netlify.app/)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Overview
 
-## Available Scripts
+This React project is a personal learning exercise designed to closely mimic an existing application, [Forkify application](https://forkify-v2.netlify.app/), created by [Jonas Schmedtmann](https://github.com/jonasschmedtmann) built with vanilla JavaScript. It serves as a hands-on exploration of React's capabilities, allowing me to gain practical experience in building a similar user interface and functionality.
 
-In the project directory, you can run:
+## Table of contents
 
-### `npm start`
+- [Key Features](#key-features)
+- [Technologies Used](#technologies-used)
+- [Link](#link)
+- [Final note](#final-note)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Key Features
+This application is a recipe application with custom recipe uploads.
+- **Master-Detail View**: Implemented a master-detail view that allows users to view and interact with a list of recipes and see detailed information when selecting a recipe.
+- **Search Feature**: Integrated a search functionality enabling users to quickly find specific recipes within the application.
+- **Pagination**: Developed a pagination custom hook to efficiently display large sets of data, ensuring a smooth user experience.
+- **Bookmarks Feature**: Created a feature that allows users to bookmark recipes for easy access.
+- **Local Storage**: Implemented local storage to save and retrieve user bookmarks, providing a seamless experience even after closing the application.
+- **Create New Recipe**: Enabled users to create and add new recipes, complete with relevant details and information.
+- **Delete Recipe**: Implemented the ability to remove unwanted recipes from the application, maintaining a clean and organized user interface.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies Used
+- [Create React App](https://github.com/facebook/create-react-app) - A tool for setting up and bootstrapping React applications
+- [React](https://reactjs.org/) - JS library
+- SCSS
+- [react-hook-form](https://www.npmjs.com/package/react-hook-form) - Flexible forms with easy-to-use validation
+- [react-router-dom](https://reactrouter.com/en/main) - Routing library for React
+- [redux-toolkit](https://redux-toolkit.js.org/) - A library to manage global state
+- [fracty](https://www.npmjs.com/package/fracty) - A decimal-to-fraction conversion module
+- [Netlify](https://www.netlify.com/) - A cloud-based web hosting and automation platform
 
-### `npm test`
+## Link
+- [Link](https://frrann-forkify-react.netlify.app/)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Final note
 
-### `npm run build`
+Please note that this project is solely for educational purposes and not intended for production use. It reflects my journey in learning React and honing my development skills.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For more details and to explore the project, feel free to dive into the code.
